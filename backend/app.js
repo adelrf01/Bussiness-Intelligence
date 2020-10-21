@@ -12,35 +12,23 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get("/hola", function (req, res) {
-    res.send("Hola gente");
-});
 
-
-app.post("/dameJugador", function (req, res) {
-    var puntuacion = req.body.puntuacion;
+app.get("/dameJugador", function (req, res) {
+    var puntuacion = req.query.puntuacion;
     var query = "Match(j:Jugador) where j.puntuacion='" + puntuacion + "' ";
-    var nacionalidad = req.body.pais;
+    var nacionalidad = req.query.pais;
     if (nacionalidad == "cualquiera") {
         query += "return j";
     } else {
         query += "and j.nacionalidad='" + nacionalidad + "' ";
     }
     query += "return j";
-    //res.send(query);
     var lista = []
     const resultadoPromesa = session.run(query).subscribe({
         onNext: function (result) {
-            //console.log(result.records);
-            //console.log(result.get(0));
             lista.push(result.get(0).properties);
-            //console.log(result);
-            //res.send(record.get(0).properties);
         },
         onCompleted: function () {
-            console.log(lista[0]);
-            console.log("_____________________________");
-            console.log(lista[1]);
             res.send(lista);
         },
         onError: function (error) {
@@ -82,6 +70,27 @@ app.get("/dameLosMejores", (req, res) => {
         }
     })
 });
+
+app.get("/dameJugadoresAleatorios",(req,res)=>{
+    var lista=[];
+    var min=60;
+    var max=95;
+    var potencial=Math.floor((Math.random()* ((max+1)-min)+min));
+    var query="match(j:Jugador) where j.potencial='"+potencial+"' return j order by j.potencial desc limit 10";
+    console.log(query);
+    const resultadoPromesa = session.run(query).subscribe({
+        onNext: function (result) {
+            lista.push(result.get(0).properties);
+        },
+        onCompleted: function () {
+            res.send(lista);
+        },
+        onError: function (error) {
+            console.log(error + " erroooooooooor");
+        }
+    })
+});
+
 
 app.listen(3000, function () {
     console.log("¡Aplicación escuchando en el puerto 3000!");
