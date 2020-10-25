@@ -77,13 +77,14 @@ app.get("/dameJugadoresAleatorios",(req,res)=>{
     var max=95;
     var potencial=Math.floor((Math.random()* ((max+1)-min)+min));
     var query="match(j:Jugador) where j.potencial='"+potencial+"' return j order by j.potencial desc limit 10";
-    console.log(query);
+    console.log(/*query*/"Estoy en funcion dame jugadores aleatorios");
     const resultadoPromesa = session.run(query).subscribe({
         onNext: function (result) {
             lista.push(result.get(0).properties);
         },
         onCompleted: function () {
             res.send(lista);
+            //res.send(query);
         },
         onError: function (error) {
             console.log(error + " erroooooooooor");
