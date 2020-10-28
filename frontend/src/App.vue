@@ -2,9 +2,10 @@
   <v-app>
     <v-app-bar app color="primary" dark>
       <v-row align="center" justify="center">
-      <v-btn color="grey">Elegir jugador por mediante filtros</v-btn>
-      <v-btn color="grey">Mejores promesas</v-btn>
-      <v-btn color="grey">Mejores jugadores</v-btn>
+        <v-btn color="grey" @click="mostrarJugadoresAleatorios=!mostrarJugadoresAleatorios">Jugadores aleatorios</v-btn>
+        <v-btn color="grey" @click="mostrarPorFiltros=!mostrarPorFiltros">Elegir jugador por mediante filtros</v-btn>
+        <v-btn color="grey">Mejores promesas</v-btn>
+        <v-btn color="grey">Mejores jugadores</v-btn>
       </v-row>
     </v-app-bar>
       <v-carousel>
@@ -16,23 +17,40 @@
           transition="fade-transition"
         ></v-carousel-item>
       </v-carousel>
-      <v-layout row wrap>
+      <v-content v-show="mostrarJugadoresAleatorios">
+        <v-layout row wrap>
         <v-flex v-for="jugador in listaJugadoresAleatorios" :key="jugador.id" >
-        <v-card  color="#F57C00" :elevation="20" max-height="470">
+        <v-card  color="#F57C00" :elevation="20" max-height="520">
         <v-card-title>Nombre completo:{{jugador.nombreCompleto}}</v-card-title>
-        <v-card-text>ID:{{jugador.id}}</v-card-text>
-        <v-card-text>Nacionalidad:{{jugador.nacionalidad}}</v-card-text>
-        <v-card-text>Salario:{{jugador.salario}}</v-card-text>
-        <v-card-text>Precio:{{jugador.precio}}</v-card-text>
-        <v-card-text>Puntuación:{{jugador.puntuacion}}</v-card-text>
-        <v-card-text>Potencial:{{jugador.potencial}}</v-card-text>
-        <v-card-text>Edad:{{jugador.edad}}</v-card-text>
-        <v-card-text>Equipo Actual:{{jugador.equipo}}</v-card-text>
-        <v-card-text>Posicion:{{jugador.posicion}}</v-card-text>
+        <v-card-text>
+          ID:{{jugador.id}}
+          <br/>
+          Nombre Completo:{{jugador.nombreCompleto}}
+          <br/>
+          Nacionalidad:{{jugador.nacionalidad}}
+          <br/>
+          Precio:{{jugador.precio}}
+          <br/>
+          Salario:{{jugador.salario}}
+          <br/>
+          Puntuacion:{{jugador.puntuacion}}
+          <br/>
+          Potencial:{{jugador.potencial}}
+          <br/>
+          Edad:{{jugador.edad}}
+          <br/>
+          Equipo Actual:{{jugador.equipo}}
+          <br/>
+          Posicion:{{jugador.posicion}}
+        </v-card-text>
         </v-card>
       </v-flex>
       </v-layout>
+      </v-content>
     <v-content>
+    <v-content v-show="mostrarPorFiltros">
+        <p>hola</p>
+    </v-content>
       <router-view/>
     </v-content>
   </v-app>
@@ -41,11 +59,12 @@
 <script>
 const axios = require("axios");
 const direccionIp = "http://127.0.0.1:3000";
-/* eslint-disable */
 export default {
   name: "App",
   data(){
     return{
+      mostrarJugadoresAleatorios:false,
+      mostrarPorFiltros:false,
       listaJugadoresAleatorios:[],
       listaPosicionesInglesAb:["RW","ST","LW","CAM","GK","CB","CDM","CF","CM","LM","RB","LB","RM","LWB","RWB"],
       listaPosicionesEspañolAb:["ED","DC","EI","MCO","POR","DFC","MCD","MP","MC","MI","LTD","LTI","MD","CAI","CAD"],
