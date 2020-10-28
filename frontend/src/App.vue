@@ -2,8 +2,8 @@
   <v-app>
     <v-app-bar app color="primary" dark>
       <v-row align="center" justify="center">
-        <v-btn color="grey" @click="mostrarJugadoresAleatorios=!mostrarJugadoresAleatorios">Jugadores aleatorios</v-btn>
-        <v-btn color="grey" @click="mostrarPorFiltros=!mostrarPorFiltros">Elegir jugador por mediante filtros</v-btn>
+        <v-btn color="grey" @click="jugadoresAleatorios">Jugadores aleatorios</v-btn>
+        <v-btn color="grey" @click="filtros">Elegir jugador por mediante filtros</v-btn>
         <v-btn color="grey">Mejores promesas</v-btn>
         <v-btn color="grey">Mejores jugadores</v-btn>
       </v-row>
@@ -49,7 +49,14 @@
       </v-content>
     <v-content>
     <v-content v-show="mostrarPorFiltros">
-        <p>hola</p>
+        <v-card color="indigo darken-2">
+          <v-toolbar color="indigo darken-1">
+            <v-select :items="nacionalidades" label="nacionalidades" solo v-model="pais" dense outline/>
+            <v-select :items="listaPosicionesEspañol" label="Posicion" solo v-model="posicion" dense outline/>
+            <v-select :items="listaEquipos" label="Equipos" solo v-model="equipo" dense outline/>
+
+          </v-toolbar>
+        </v-card>
     </v-content>
       <router-view/>
     </v-content>
@@ -57,6 +64,8 @@
 </template>
 
 <script>
+/* eslint-disable */
+// eslint-disable-next-line
 const axios = require("axios");
 const direccionIp = "http://127.0.0.1:3000";
 export default {
@@ -74,7 +83,12 @@ export default {
         {src:"https://estaticos.muyhistoria.es/uploads/images/pyr/5e6b70975bafe8622bcdb30f/REDES.jpg"},
         {src:"https://media.istockphoto.com/vectors/set-of-tournament-posters-of-football-or-soccer-league-design-of-for-vector-id950398608?b=1&k=6&m=950398608&s=612x612&w=0&h=6ePl4cGEUkNt72-xN6qD6DjYEkDHiB837iK9WLTCW2A="},
         {src:"https://p1.pxfuel.com/preview/849/991/808/stadium-crowded-football-people-event-spectators.jpg"}
-      ]
+      ],
+      nacionalidades:[],
+      pais:"",
+      posicion:"",
+      listaEquipos:[],
+      equipo:""
     }
   },
   mounted(){
@@ -85,17 +99,51 @@ export default {
     })
   },
   methods:{
+    filtros(){
+      this.mostrarPorFiltros=!this.mostrarPorFiltros;
+      this.rellenarNacionalidades();
+      this.listaPosicionesEspañol.push("Cualquiera");
+      this.rellenarEquipos();
+    },
+    rellenarNacionalidades(){
+      axios
+        .get(direccionIp+"/dameNacionalidades")
+        .then(respuesta=>{
+          for(var i=0;i<respuesta.data.length;i++){
+            this.nacionalidades.push(respuesta.data[i]);
+          }
+          //this.nacionalidades=respuesta.data;
+        });
+      this.nacionalidades.push("Cualquiera");
+    },
+    rellenarEquipos(){
+      axios
+        .get(direccionIp+"/dameEquipos")
+        .then(respuesta=>{
+          console.log(respuesta.data);
+          for(var i=0;i<respuesta.data.length;i++){
+            this.listaEquipos.push(respuesta.data[i]);
+          }
+        });
+      this.listaEquipos.push("Cualquiera");
+    },
     aleatorios(response){
       //pNueva = this.nuevoPrecio(response[0].precio);
       for(var i=0;i<response.length;i++){
         response[i].precio=this.nuevoPrecio(response[i].precio);
         response[i].salario=this.nuevoPrecio(response[i].salario);
         response[i].posicion=response[i].posicion+"/"+this.posicionEnEspañol(response[i].posicion);
-        //console.log(response[i].posicion);
         this.listaJugadoresAleatorios.push(response[i]);
-        //console.log(this.listaJugadoresAleatorios[i]);
-        //console.log("sawfasdsadadawd:"+pNueva);
       }
+    },
+    jugadoresAleatorios(){
+      this.listaJugadoresAleatorios=[];
+      axios
+        .get(direccionIp+"/dameJugadoresAleatorios")
+        .then(response=>{
+          this.aleatorios(response.data);
+      });
+      this.mostrarJugadoresAleatorios=!this.mostrarJugadoresAleatorios;
     },
     nuevoPrecio(precio){
       var pos=precio.length;

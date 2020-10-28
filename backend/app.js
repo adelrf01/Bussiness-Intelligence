@@ -6,7 +6,7 @@ var request = require("request");
 var cors = require("cors");
 const neo4j = require("neo4j-driver");
 const driver = neo4j.driver("bolt://localhost", neo4j.auth.basic("neo4j", "FichajesFutbol"));
-const session = driver.session();
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 
 
 app.get("/dameJugador", function (req, res) {
+    const session = driver.session();
     var puntuacion = req.query.puntuacion;
     var query = "Match(j:Jugador) where j.puntuacion='" + puntuacion + "' ";
     var nacionalidad = req.query.pais;
@@ -30,6 +31,7 @@ app.get("/dameJugador", function (req, res) {
         },
         onCompleted: function () {
             res.send(lista);
+            session.close();
         },
         onError: function (error) {
             console.log(error + " erroooooooooor");
@@ -39,6 +41,7 @@ app.get("/dameJugador", function (req, res) {
 });
 
 app.get("/dameLosMasPrometedores", (req, res) => {
+    const session = driver.session();
     var query = "match(j:Jugador) where j.edad>='16' and j.edad<='23' return j order by j.potencial desc limit 10";
     var lista=[];
     const resultadoPromesa = session.run(query).subscribe({
@@ -47,6 +50,7 @@ app.get("/dameLosMasPrometedores", (req, res) => {
         },
         onCompleted: function () {
             res.send(lista);
+            session.close();
         },
         onError: function (error) {
             console.log(error + " erroooooooooor");
@@ -55,6 +59,7 @@ app.get("/dameLosMasPrometedores", (req, res) => {
 });
 
 app.get("/dameLosMejores", (req, res) => {
+    const session = driver.session();
     var lista = [];
     var query = "match(j:Jugador) return j order by j.puntuacion desc limit 10";
     //res.send(query);
@@ -64,6 +69,7 @@ app.get("/dameLosMejores", (req, res) => {
         },
         onCompleted: function () {
             res.send(lista);
+            session.close();
         },
         onError: function (error) {
             console.log(error + " erroooooooooor");
@@ -72,11 +78,12 @@ app.get("/dameLosMejores", (req, res) => {
 });
 
 app.get("/dameJugadoresAleatorios",(req,res)=>{
+    const session = driver.session();
     var lista=[];
     var min=60;
     var max=95;
     var potencial=Math.floor((Math.random()* ((max+1)-min)+min));
-    var query="match(j:Jugador) where j.potencial='"+potencial+"' return j order by j.potencial desc limit 10";
+    var query="match(j:Jugador) where j.potencial='"+potencial+"' return j order by j.puntuacion desc limit 10";
     console.log(/*query*/"Estoy en funcion dame jugadores aleatorios");
     const resultadoPromesa = session.run(query).subscribe({
         onNext: function (result) {
@@ -84,7 +91,50 @@ app.get("/dameJugadoresAleatorios",(req,res)=>{
         },
         onCompleted: function () {
             res.send(lista);
+            session.close();
             //res.send(query);
+        },
+        onError: function (error) {
+            console.log(error + " erroooooooooor");
+        }
+    })
+});
+app.get("/dameNacionalidades",(req,res)=>{
+    const session = driver.session();
+    console.log("Estoy en dame nacionalidades");
+    var nacionalidades=[];
+    var query="match(j:Jugador) return distinct j.nacionalidad"
+    const resultadoPromesa = session.run(query).subscribe({
+        onNext: function (result) {
+            //console.log(result.get(0));
+            nacionalidades.push(result.get(0));
+        },
+        onCompleted: function () {
+            //console.log(nacionalidades.length);
+            res.send(nacionalidades);
+            session.close();
+            /*//res.send(query);*/
+        },
+        onError: function (error) {
+            console.log(error + " erroooooooooor");
+        }
+    })
+});
+app.get("/dameEquipos",(req,res)=>{
+    const session = driver.session();
+    console.log("Estoy en dame Equipos");
+    var equipos=[];
+    var query="match(j:Jugador) return distinct j.equipo";
+    const resultadoPromesa = session.run(query).subscribe({
+        onNext: function (result) {
+            //console.log(result.get(0));
+           equipos.push(result.get(0));
+        },
+        onCompleted: function () {
+            //console.log(nacionalidades.length);
+            res.send(equipos);
+            session.close();
+            /*//res.send(query);*/
         },
         onError: function (error) {
             console.log(error + " erroooooooooor");
