@@ -99,6 +99,7 @@ app.get("/dameJugadoresAleatorios",(req,res)=>{
         }
     })
 });
+
 app.get("/dameNacionalidades",(req,res)=>{
     const session = driver.session();
     console.log("Estoy en dame nacionalidades");
@@ -120,6 +121,7 @@ app.get("/dameNacionalidades",(req,res)=>{
         }
     })
 });
+
 app.get("/dameEquipos",(req,res)=>{
     const session = driver.session();
     console.log("Estoy en dame Equipos");
@@ -142,6 +144,10 @@ app.get("/dameEquipos",(req,res)=>{
     })
 });
 
+app.get("/dameJugadoresConFiltros",(req,res)=>{
+    console.log("ESTAMOS EN DAME Jugadores con filtros");
+    res.send("Servidor contesta");
+});
 
 app.listen(3000, function () {
     console.log("¡Aplicación escuchando en el puerto 3000!");
