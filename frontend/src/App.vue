@@ -74,7 +74,7 @@
             <v-btn color="success" @click="mostrarElPrecio">OK</v-btn>
           </v-toolbar>
           <v-toolbar color="indigo darken-1">
-            <v-slider v-if="deseaMostrarEdad" v-model="valorEdad" step="1" thumb-label ticks label="Maxima edad" max="45"></v-slider>
+            <v-slider v-if="deseaMostrarEdad" v-model="valorEdad" step="1" thumb-label ticks label="Maxima edad" max="45" min="16"></v-slider>
             <v-select :items="mostrarEdad" v-model="edad" label="Elegir edad maxima"></v-select>
             <v-btn color="success" @click="mostrarLaEdad">OK</v-btn>
           </v-toolbar>
@@ -261,43 +261,81 @@ export default {
       var listaParaQuery=[];
       var nacionalidad,posicion,equipo;
       var puntuacionMaxima,potencialMaximo, salarioMaximo, precioMaximo, edadMaxima;
-      if(this.pais.length!=0 && this.pais!="Cualquiera"){
-        nacionalidad={nacionalidad:this.pais};
-        listaParaQuery.push(nacionalidad);
+      if(this.pais.length==0 || this.pais=="Cualquiera"){
+        /*nacionalidad={nacionalidad:this.pais};
+        listaParaQuery.push(nacionalidad);*/
+        nacionalidad="cualquiera";
+      }else{
+        nacionalidad=this.pais;
       }
-      if(this.posicion.length!=0 && this.posicion!="Cualquiera"){
-        posicion={posicion:this.posicion};
-        listaParaQuery.push(posicion);
+      if(this.posicion.length==0 || this.posicion=="Cualquiera"){
+        /*posicion={posicion:this.posicion};
+        listaParaQuery.push(posicion);*/
+        posicion="cualquiera";
+      }else{
+        posicion=this.posicion;
       }
-      if(this.equipo.length!=0 && this.equipo!="Cualquiera"){
-        equipo={equipo:this.equipo};
-        listaParaQuery(equipo);
+      if(this.equipo.length==0 || this.equipo=="Cualquiera"){
+        /*equipo={equipo:this.equipo};
+        listaParaQuery(equipo);*/
+        equipo="cualquiera";
+      }else{
+        equipo=this.equipo;
       }
-      if(this.puntuacion.length!=0 && this.puntuacion!="no"){
-        puntuacionMaxima={puntuacion:this.valorPuntuacion};
-        listaParaQuery.push(puntuacionMaxima);
+      if(this.puntuacion.length==0 || this.puntuacion=="no"){
+        /*puntuacionMaxima={puntuacion:this.valorPuntuacion};
+        listaParaQuery.push(puntuacionMaxima);*/
+        puntuacionMaxima="cualquiera";
+      }else{
+        puntuacionMaxima=this.valorPuntuacion;
       }
-      if(this.potencial.length!=0 && this.potencial!="no"){
-        potencialMaximo={potencial:this.valorPotencial};
-        listaParaQuery.push(potencialMaximo);
+      if(this.potencial.length==0 || this.potencial=="no"){
+        /*potencialMaximo={potencial:this.valorPotencial};
+        listaParaQuery.push(potencialMaximo);*/
+        potencialMaximo="cualquiera";
+      }else{
+        potencialMaximo=this.valorPotencial;
       }
-      if(this.salario.length!=0 && this.salario!="no"){
-        salarioMaximo={salario:this.valorSalario};
-        listaParaQuery.push(salarioMaximo);
+      if(this.salario.length==0 || this.salario=="no"){
+        /*salarioMaximo={salario:this.valorSalario};
+        listaParaQuery.push(salarioMaximo);*/
+        salarioMaximo="cualquiera";
+      }else{
+        salarioMaximo=this.valorSalario;
       }
       if(this.precio.length!=0 && this.precio!="no"){
-        precioMaximo={precio:this.valorPrecio};
-        listaParaQuery.push(precioMaximo);
+        /*precioMaximo={precio:this.valorPrecio};
+        listaParaQuery.push(precioMaximo);*/
+        precioMaximo="cualquiera";
+      }else{
+        precioMaximo=this.valorPrecio;
       }
-      if(this.edad.length!=0 && this.edad!="no"){
-        edadMaxima={potencial:this.valorEdad};
-        listaParaQuery.push(potencialEdad);
+      if(this.edad.length==0 || this.edad=="no"){
+        /*edadMaxima={potencial:this.valorEdad};
+        listaParaQuery.push(potencialEdad);*/
+        edadMaxima="cualquiera";
+      }else{
+        edadMaxima=this.valorEdad;
       }
+      /*if(listaParaQuery.length==0){
+        listaParaQuery.push("NADA");
+      }*/
       axios
-        .get(direccionIp+"/dameJugadoresConFiltros")
-        .then(response=>{
-        console.log("la respusta que llega del servidor:"+response.data);
+        .get(direccionIp+"/dameJugadoresConFiltros",{
+          params:{
+            nacionalidad:nacionalidad,
+            posicion:posicion,
+            equipo:equipo,
+            puntuacion:puntuacionMaxima,
+            potencial:potencialMaximo,
+            salario:salarioMaximo,
+            precio:precioMaximo,
+            edad:edadMaxima,
+          },
         })
+        /*.then(response=>{
+        console.log("la respusta que llega del servidor:"+response.data);
+        })*/
     }
   }
 };

@@ -146,8 +146,20 @@ app.get("/dameEquipos",(req,res)=>{
 
 app.get("/dameJugadoresConFiltros",(req,res)=>{
     console.log("ESTAMOS EN DAME Jugadores con filtros");
-    res.send("Servidor contesta");
+    var nacionalidad=req.query.nacionalidad;
+    var posicion=req.query.posicion;
+    var equipo=req.query.equipo;
+    var puntuacion=req.query.puntuacion;
+    var potencial=req.query.potencial;
+    var salario=req.query.salario;
+    var precio=req.query.precio;
+    var edad=req.query.edad;
+    
+    //console.log("LA NACIONALIDAD ES:"+nacionalidad);
+    console.log("LA EDAD MAXIMA ES:"+edad);
+    //res.send("Servidor contesta");
 });
+
 
 app.listen(3000, function () {
     console.log("¡Aplicación escuchando en el puerto 3000!");
