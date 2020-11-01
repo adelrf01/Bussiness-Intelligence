@@ -146,6 +146,9 @@ app.get("/dameEquipos",(req,res)=>{
 
 app.get("/dameJugadoresConFiltros",(req,res)=>{
     console.log("ESTAMOS EN DAME Jugadores con filtros");
+
+    const session = driver.session();
+
     var nacionalidad=req.query.nacionalidad;
     var posicion=req.query.posicion;
     var equipo=req.query.equipo;
@@ -155,9 +158,82 @@ app.get("/dameJugadoresConFiltros",(req,res)=>{
     var precio=req.query.precio;
     var edad=req.query.edad;
     
+    var lista=[];
+    var query = "match(j:Jugador) ";
     //console.log("LA NACIONALIDAD ES:"+nacionalidad);
-    console.log("LA EDAD MAXIMA ES:"+edad);
-    //res.send("Servidor contesta");
+    //console.log("LA EDAD MAXIMA ES:"+edad);
+    //res.send("Servidor contesta edad maxima:"+edad);
+
+    if(nacionalidad!="cualquiera"){
+        query+="where j.nacionalidad='"+nacionalidad+"' ";
+    }
+    if(posicion!="cualquiera"){
+        if(query.includes("where")){
+            query+="AND j.posicion='"+posicion+"' ";
+        }else{
+            query+="where j.posicion='"+posicion+"' ";
+        }
+    }
+    if(equipo!="cualquiera"){
+        if(query.includes("where")){
+            query+="AND equipo='"+equipo+"' ";
+        }else{
+            query+="where equipo='"+equipo+"' ";
+        }
+    }
+    if(puntuacion!="cualquiera"){
+        if(query.includes("where")){
+            query+="AND j.puntuacion <= '"+puntuacion+"' ";
+        }else{
+            query+="where j.puntuacion <= '"+puntuacion+"' ";
+        }
+    }
+    if(potencial!="cualquiera"){
+        if(query.includes("where")){
+            query+="AND j.potencial<='"+potencial+"' ";
+        }else{
+            query+="where j.potencial<='"+potencial+"' ";
+        }
+    }
+    if(salario!="cualquiera"){
+        if(query.includes("where")){
+            query+="AND j.salario<='"+salario+"' ";
+        }else{
+            query+="where j.salario<='"+salario+"' ";
+        }
+    }
+    if(precio!="cualquiera"){
+        if(query.includes("where")){
+            query+="AND j.precio<='"+precio+"' ";
+        }else{
+            query+="where j.precio<='"+precio+"' ";
+        }
+    }
+    if(edad!="cualquiera"){
+        if(query.includes("where")){
+            query+="AND j.edad<='"+edad+"' ";
+        }else{
+            query+="where j.edad<='"+edad+"' ";
+        }
+    }
+    query+="return j order by j.puntuacion desc limit 15";
+    const resultadoPromesa = session.run(query).subscribe({
+        onNext: function (result) {
+            console.log(result.get(0));
+            lista.push(result.get(0));
+        },
+        onCompleted: function () {
+            //console.log(nacionalidades.length);
+            //res.send(lista);
+            session.close();
+            /*//res.send(query);*/
+        },
+        onError: function (error) {
+            console.log(error + " erroooooooooor");
+        }
+    })
+    res.send(lista);
+
 });
 
 
