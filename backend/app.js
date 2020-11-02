@@ -216,23 +216,28 @@ app.get("/dameJugadoresConFiltros",(req,res)=>{
             query+="where j.edad<='"+edad+"' ";
         }
     }
+    if(query.includes("where")==false){
+        var num=Math.floor((Math.random()* ((97+1)-70)+70));
+        query+="where j.potencial='"+num+"' ";
+        //console.log("NUMERO:"+num);
+    }
     query+="return j order by j.puntuacion desc limit 15";
     const resultadoPromesa = session.run(query).subscribe({
         onNext: function (result) {
-            console.log(result.get(0));
-            lista.push(result.get(0));
+            console.log(result.get(0).properties);
+            lista.push(result.get(0).properties);
         },
         onCompleted: function () {
             //console.log(nacionalidades.length);
-            //res.send(lista);
+            res.send(lista);
             session.close();
-            /*//res.send(query);*/
+            //res.send(query);
         },
         onError: function (error) {
             console.log(error + " erroooooooooor");
         }
     })
-    res.send(lista);
+    
 
 });
 

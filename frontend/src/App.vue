@@ -303,7 +303,7 @@ export default {
       }else{
         salarioMaximo=this.valorSalario;
       }
-      if(this.precio.length!=0 && this.precio!="no"){
+      if(this.precio.length!=0 || this.precio!="no"){
         /*precioMaximo={precio:this.valorPrecio};
         listaParaQuery.push(precioMaximo);*/
         precioMaximo="cualquiera";
@@ -333,9 +333,10 @@ export default {
             edad:edadMaxima,
           },
         })
-        /*.then(response=>{
-        console.log("la respusta que llega del servidor:"+response.data);
-        })*/
+        .then(response=>{
+          this.listaJugadoresPorFiltros=response.data;
+          //console.log(response.data);
+        })
     }
   }
 };
