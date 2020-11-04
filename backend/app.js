@@ -211,14 +211,14 @@ app.get("/dameJugadoresConFiltros",(req,res)=>{
     }
     if(edad!="cualquiera"){
         if(query.includes("where")){
-            query+="AND j.edad<='"+edad+"' ";
+            query+="AND j.edad='"+edad+"' ";
         }else{
-            query+="where j.edad<='"+edad+"' ";
+            query+="where j.edad='"+edad+"' ";
         }
     }
     if(query.includes("where")==false){
         var num=Math.floor((Math.random()* ((97+1)-70)+70));
-        query+="where j.potencial='"+num+"' ";
+        query+="where j.potencial<='"+num+"' ";
         //console.log("NUMERO:"+num);
     }
     query+="return j order by j.puntuacion desc limit 15";
@@ -228,8 +228,12 @@ app.get("/dameJugadoresConFiltros",(req,res)=>{
             lista.push(result.get(0).properties);
         },
         onCompleted: function () {
-            //console.log(nacionalidades.length);
+            if(lista.length==0){
+                lista.push("Según esos filtros, no hay jugadores");
+            }
             res.send(lista);
+            console.log(lista);
+            console.log(query);
             session.close();
             //res.send(query);
         },
