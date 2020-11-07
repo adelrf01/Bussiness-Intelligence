@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app style="background: black">
     <v-app-bar app color="primary" dark>
       <v-row align="center" justify="center">
         <v-btn color="grey" @click="jugadoresAleatorios">Jugadores aleatorios</v-btn>
@@ -47,7 +47,6 @@
       </v-flex>
       </v-layout>
       </v-content>
-    <v-content>
     <v-content v-show="mostrarPorFiltros">
         <v-card color="indigo darken-2">
           <v-toolbar color="indigo darken-1">
@@ -83,7 +82,36 @@
             <v-btn color="success" @click="buscarJugadores">Buscar jugadores</v-btn>
           </v-toolbar>
         </v-card>
+          <v-layout row wrap>
+            <v-flex v-for="jugador in listaJugadoresPorFiltros" :key="jugador.id" >
+              <v-card  color="#F57C00" :elevation="20" max-height="520">
+                <v-card-title>Nombre completo:{{jugador.nombreCompleto}}</v-card-title>
+                <v-card-text>
+                  ID:{{jugador.id}}
+                  <br/>
+                  Nombre Completo:{{jugador.nombreCompleto}}
+                  <br/>
+                  Nacionalidad:{{jugador.nacionalidad}}
+                  <br/>
+                  Precio:{{jugador.precio}}
+                  <br/>
+                  Salario:{{jugador.salario}}
+                  <br/>
+                  Puntuacion:{{jugador.puntuacion}}
+                  <br/>
+                  Potencial:{{jugador.potencial}}
+                  <br/>
+                  Edad:{{jugador.edad}}
+                  <br/>
+                  Equipo Actual:{{jugador.equipo}}
+                  <br/>
+                  Posicion:{{jugador.posicion}}
+                </v-card-text>
+              </v-card>
+            </v-flex>
+          </v-layout>
     </v-content>
+    <v-content>
       <router-view/>
     </v-content>
   </v-app>
@@ -152,6 +180,7 @@ export default {
       this.rellenarNacionalidades();
       this.listaPosicionesEspañol.push("Cualquiera");
       this.rellenarEquipos();
+      this.listaJugadoresPorFiltros=[];
     },
     potencialYpuntuacion(){
       this.deseaMostrarPotencial=false;
@@ -189,6 +218,14 @@ export default {
         this.listaJugadoresAleatorios.push(response[i]);
       }
     },
+    porFiltros(response){
+      for(var i=0;i<response.length;i++){
+        response[i].precio=this.nuevoPrecio(response[i].precio);
+        response[i].salario=this.nuevoPrecio(response[i].salario);
+        response[i].posicion=response[i].posicion+"/"+this.posicionEnEspañol(response[i].posicion);
+        this.listaJugadoresPorFiltros.push(response[i]);
+      }
+    },
     jugadoresAleatorios(){
       this.listaJugadoresAleatorios=[];
       axios
@@ -216,6 +253,7 @@ export default {
       return this.listaPosicionesEspañol[i];
     },
     buscarJugadores(){
+      this.listaJugadoresPorFiltros=[];
       var nacionalidad,posicion,equipo;
       var puntuacionMaxima,potencialMaximo, salarioMaximo, precioMaximo, edadMaxima;
       if(this.pais.length==0 || this.pais=="Cualquiera"){
@@ -226,7 +264,8 @@ export default {
       if(this.posicion.length==0 || this.posicion=="Cualquiera"){
         posicion="cualquiera";
       }else{
-        posicion=this.posicion;
+        var pos = this.listaPosicionesEspañol.indexOf(this.posicion);
+        posicion=this.listaPosicionesInglesAb[pos];
       }
       if(this.equipo.length==0 || this.equipo=="Cualquiera"){
         equipo="cualquiera";
@@ -276,7 +315,7 @@ export default {
           if(response.data[0]=="Según esos filtros, no hay jugadores"){
             alert(response.data[0]);
           }else{
-            this.listaJugadoresPorFiltros=response.data;
+            this.porFiltros(response.data);
           }
           //console.log(response.data);
         });

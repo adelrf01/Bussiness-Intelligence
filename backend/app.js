@@ -176,9 +176,9 @@ app.get("/dameJugadoresConFiltros",(req,res)=>{
     }
     if(equipo!="cualquiera"){
         if(query.includes("where")){
-            query+="AND equipo='"+equipo+"' ";
+            query+="AND j.equipo='"+equipo+"' ";
         }else{
-            query+="where equipo='"+equipo+"' ";
+            query+="where j.equipo='"+equipo+"' ";
         }
     }
     if(puntuacion!="cualquiera"){
