@@ -4,8 +4,8 @@
       <v-row align="center" justify="center">
         <v-btn color="grey" @click="jugadoresAleatorios">Jugadores aleatorios</v-btn>
         <v-btn color="grey" @click="filtros">Elegir jugador por mediante filtros</v-btn>
-        <v-btn color="grey">Mejores promesas</v-btn>
-        <v-btn color="grey">Mejores jugadores</v-btn>
+        <v-btn color="grey" @click="jugadoresPromesas">Mejores promesas</v-btn>
+        <v-btn color="grey" @click="mejoresJugadores">Mejores jugadores</v-btn>
       </v-row>
     </v-app-bar>
       <v-carousel>
@@ -19,33 +19,33 @@
       </v-carousel>
       <v-content v-show="mostrarJugadoresAleatorios">
         <v-layout row wrap>
-        <v-flex v-for="jugador in listaJugadoresAleatorios" :key="jugador.id" >
-        <v-card  color="#F57C00" :elevation="20" max-height="520">
-        <v-card-title>Nombre completo:{{jugador.nombreCompleto}}</v-card-title>
-        <v-card-text>
-          ID:{{jugador.id}}
-          <br/>
-          Nombre Completo:{{jugador.nombreCompleto}}
-          <br/>
-          Nacionalidad:{{jugador.nacionalidad}}
-          <br/>
-          Precio:{{jugador.precio}}
-          <br/>
-          Salario:{{jugador.salario}}
-          <br/>
-          Puntuacion:{{jugador.puntuacion}}
-          <br/>
-          Potencial:{{jugador.potencial}}
-          <br/>
-          Edad:{{jugador.edad}}
-          <br/>
-          Equipo Actual:{{jugador.equipo}}
-          <br/>
-          Posicion:{{jugador.posicion}}
-        </v-card-text>
-        </v-card>
-      </v-flex>
-      </v-layout>
+          <v-flex v-for="jugador in listaJugadoresAleatorios" :key="jugador.id" >
+            <v-card  color="#F57C00" :elevation="20" max-height="520">
+              <v-card-title>Nombre completo:{{jugador.nombreCompleto}}</v-card-title>
+                <v-card-text>
+                  ID:{{jugador.id}}
+                  <br/>
+                  Nombre Completo:{{jugador.nombreCompleto}}
+                  <br/>
+                  Nacionalidad:{{jugador.nacionalidad}}
+                  <br/>
+                  Precio:{{jugador.precio}}
+                  <br/>
+                  Salario:{{jugador.salario}}
+                  <br/>
+                  Puntuacion:{{jugador.puntuacion}}
+                  <br/>
+                  Potencial:{{jugador.potencial}}
+                  <br/>
+                  Edad:{{jugador.edad}}
+                  <br/>
+                  Equipo Actual:{{jugador.equipo}}
+                  <br/>
+                  Posicion:{{jugador.posicion}}
+                </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
       </v-content>
     <v-content v-show="mostrarPorFiltros">
         <v-card color="indigo darken-2">
@@ -111,6 +111,66 @@
             </v-flex>
           </v-layout>
     </v-content>
+    <v-content v-show="mostrarMejoresPromesas">
+      <v-layout row wrap>
+          <v-flex v-for="jugador in listaJugadoresPromesas" :key="jugador.id" >
+            <v-card  color="#F57C00" :elevation="20" max-height="520">
+              <v-card-title>Nombre completo:{{jugador.nombreCompleto}}</v-card-title>
+                <v-card-text>
+                  ID:{{jugador.id}}
+                  <br/>
+                  Nombre Completo:{{jugador.nombreCompleto}}
+                  <br/>
+                  Nacionalidad:{{jugador.nacionalidad}}
+                  <br/>
+                  Precio:{{jugador.precio}}
+                  <br/>
+                  Salario:{{jugador.salario}}
+                  <br/>
+                  Puntuacion:{{jugador.puntuacion}}
+                  <br/>
+                  Potencial:{{jugador.potencial}}
+                  <br/>
+                  Edad:{{jugador.edad}}
+                  <br/>
+                  Equipo Actual:{{jugador.equipo}}
+                  <br/>
+                  Posicion:{{jugador.posicion}}
+                </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
+    </v-content>
+    <v-content v-show="mostrarMejoresJugadores">
+      <v-layout row wrap>
+          <v-flex v-for="jugador in listaMejoresJugadores" :key="jugador.id" >
+            <v-card  color="#F57C00" :elevation="20" max-height="520">
+              <v-card-title>Nombre completo:{{jugador.nombreCompleto}}</v-card-title>
+                <v-card-text>
+                  ID:{{jugador.id}}
+                  <br/>
+                  Nombre Completo:{{jugador.nombreCompleto}}
+                  <br/>
+                  Nacionalidad:{{jugador.nacionalidad}}
+                  <br/>
+                  Precio:{{jugador.precio}}
+                  <br/>
+                  Salario:{{jugador.salario}}
+                  <br/>
+                  Puntuacion:{{jugador.puntuacion}}
+                  <br/>
+                  Potencial:{{jugador.potencial}}
+                  <br/>
+                  Edad:{{jugador.edad}}
+                  <br/>
+                  Equipo Actual:{{jugador.equipo}}
+                  <br/>
+                  Posicion:{{jugador.posicion}}
+                </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
+    </v-content>
     <v-content>
       <router-view/>
     </v-content>
@@ -128,7 +188,10 @@ export default {
     return{
       mostrarJugadoresAleatorios:false,
       mostrarPorFiltros:false,
+      mostrarMejoresPromesas:false,
+      mostrarMejoresJugadores:false,
       listaJugadoresAleatorios:[],
+      listaMejoresJugadores:[],
       listaPosicionesInglesAb:["RW","ST","LW","CAM","GK","CB","CDM","CF","CM","LM","RB","LB","RM","LWB","RWB"],
       listaPosicionesEspañolAb:["ED","DC","EI","MCO","POR","DFC","MCD","MP","MC","MI","LTD","LTI","MD","CAI","CAD"],
       listaPosicionesEspañol:["Extremo derecho","Delantero centro","Extremo izquierdo","Mediocentro ofensivo","Portero","Defensa central","Mediocentro defensivo","Mediapunta","Mediocentro","Medio izquierdo","Lateral derecho","Lateral izquierda","Medio derecho","Carrilero izquierdo","Carrilero derecho"],
@@ -139,6 +202,7 @@ export default {
         {src:"https://p1.pxfuel.com/preview/849/991/808/stadium-crowded-football-people-event-spectators.jpg"}
       ],
       listaJugadoresPorFiltros:[],
+      listaJugadoresPromesas:[],
       nacionalidades:[],
       pais:"",
       posicion:"",
@@ -226,6 +290,15 @@ export default {
         this.listaJugadoresPorFiltros.push(response[i]);
       }
     },
+    promesas(response){
+      for(var i=0;i<response.length;i++){
+        response[i].precio=this.nuevoPrecio(response[i].precio);
+        response[i].salario=this.nuevoPrecio(response[i].salario);
+        response[i].posicion=response[i].posicion+"/"+this.posicionEnEspañol(response[i].posicion);
+        //console.log(response[i]);
+        this.listaJugadoresPromesas.push(response[i]);
+      }
+    },
     jugadoresAleatorios(){
       this.listaJugadoresAleatorios=[];
       axios
@@ -235,16 +308,47 @@ export default {
       });
       this.mostrarJugadoresAleatorios=!this.mostrarJugadoresAleatorios;
     },
+    jugadoresPromesas(){
+      this.listaJugadoresPromesas=[];
+      axios
+        .get(direccionIp+"/dameJugadoresPromesas")
+        .then(respuesta=>{
+          this.promesas(respuesta.data);
+        });
+        this.mostrarMejoresPromesas=!this.mostrarMejoresPromesas;
+    },
+    mejores(response){
+      for(var i=0;i<response.length;i++){
+        response[i].precio=this.nuevoPrecio(response[i].precio);
+        response[i].salario=this.nuevoPrecio(response[i].salario);
+        response[i].posicion=response[i].posicion+"/"+this.posicionEnEspañol(response[i].posicion);
+        //console.log(response[i]);
+        this.listaMejoresJugadores.push(response[i]);
+      }
+    },
+    mejoresJugadores(){
+      this.listaMejoresJugadores=[];
+      axios
+        .get(direccionIp+"/dameLosMejores")
+        .then(respuesta=>{
+          this.mejores(respuesta.data);
+        });
+        this.mostrarMejoresJugadores=!this.mostrarMejoresJugadores;
+    },
     nuevoPrecio(precio){
       var pos=precio.length;
       var precioNuevo="";
       var cont=0;
-      for(var i=pos-1;i>=0;i--){
-        cont++;
-        precioNuevo=precio[i]+precioNuevo;
-        if(cont%3==0){
-          precioNuevo="."+precioNuevo;
+      if(pos>3){
+        for(var i=pos-1;i>=0;i--){
+          cont++;
+          precioNuevo=precio[i]+precioNuevo;
+          if(cont%3==0){
+            precioNuevo="."+precioNuevo;
+          }
         }
+      }else{
+        precioNuevo=precio;
       }
       return precioNuevo;
     },

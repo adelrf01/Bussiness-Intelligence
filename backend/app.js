@@ -144,6 +144,27 @@ app.get("/dameEquipos",(req,res)=>{
     })
 });
 
+app.get("/dameJugadoresPromesas",(req,res)=>{
+    const session = driver.session();
+    var jugadores=[];
+    var query = "match(j:Jugador) where j.edad<='22' return j order by j.potencial desc limit 15";
+    //res.send("Holaaa");
+    const resultadoPromesa = session.run(query).subscribe({
+        onNext: function (result) {
+            //console.log(result.get(0));
+           jugadores.push(result.get(0).properties);
+        },
+        onCompleted: function () {
+            res.send(jugadores);
+            //session.close();
+        },
+        onError: function (error) {
+            //console.log(error + " erroooooooooor");
+        }
+    })
+    //res.send(query);
+});
+
 app.get("/dameJugadoresConFiltros",(req,res)=>{
     console.log("ESTAMOS EN DAME Jugadores con filtros");
 
