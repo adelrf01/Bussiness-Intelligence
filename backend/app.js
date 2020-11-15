@@ -5,7 +5,7 @@ var bodyParser = require("body-parser");
 var request = require("request");
 var cors = require("cors");
 const neo4j = require("neo4j-driver");
-const driver = neo4j.driver("bolt://localhost", neo4j.auth.basic("neo4j", "FichajesFutbol"));
+const driver = neo4j.driver("bolt://localhost", neo4j.auth.basic("neo4j", "FutbolFichajes"));
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
