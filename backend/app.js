@@ -12,7 +12,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(bodyParser.json());
 
-
 app.get("/dameJugador", function (req, res) {
     const session = driver.session();
     var puntuacion = req.query.puntuacion;
