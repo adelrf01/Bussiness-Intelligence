@@ -1,178 +1,265 @@
 <template>
-  <v-app style="background: black">
-    <v-app-bar app color="primary" dark>
+  <v-app style="background: #1A237E">
+    <v-app-bar app color="#1A237E" dark>
       <v-row align="center" justify="center">
-        <v-btn color="grey" @click="jugadoresAleatorios">Jugadores aleatorios</v-btn>
-        <v-btn color="grey" @click="filtros">Elegir jugador por mediante filtros</v-btn>
-        <v-btn color="grey" @click="jugadoresPromesas">Mejores promesas</v-btn>
-        <v-btn color="grey" @click="mejoresJugadores">Mejores jugadores</v-btn>
+        <v-btn text @click="jugadoresAleatorios">Jugadores aleatorios</v-btn>
+        <v-btn text @click="filtros">Elegir jugador por mediante filtros</v-btn>
+        <v-btn text @click="jugadoresPromesas">Mejores promesas</v-btn>
+        <v-btn text @click="mejoresJugadores">Mejores jugadores</v-btn>
       </v-row>
     </v-app-bar>
-      <v-carousel>
-        <v-carousel-item
-          v-for="(item,i) in fotos"
-          :key="i"
-          :src="item.src"
-          reverse-transition="fade-transition"
-          transition="fade-transition"
-        ></v-carousel-item>
-      </v-carousel>
-      <v-content v-show="mostrarJugadoresAleatorios">
-        <v-layout row wrap>
-          <v-flex v-for="jugador in listaJugadoresAleatorios" :key="jugador.id" >
-            <v-card  color="#F57C00" :elevation="20" max-height="520">
-              <v-card-title>Nombre completo:{{jugador.nombreCompleto}}</v-card-title>
-                <v-card-text>
-                  ID:{{jugador.id}}
-                  <br/>
-                  Nombre Completo:{{jugador.nombreCompleto}}
-                  <br/>
-                  Nacionalidad:{{jugador.nacionalidad}}
-                  <br/>
-                  Precio:{{jugador.precio}}
-                  <br/>
-                  Salario:{{jugador.salario}}
-                  <br/>
-                  Puntuacion:{{jugador.puntuacion}}
-                  <br/>
-                  Potencial:{{jugador.potencial}}
-                  <br/>
-                  Edad:{{jugador.edad}}
-                  <br/>
-                  Equipo Actual:{{jugador.equipo}}
-                  <br/>
-                  Posicion:{{jugador.posicion}}
-                </v-card-text>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-content>
+    <v-carousel>
+      <v-carousel-item
+        v-for="(item, i) in fotos"
+        :key="i"
+        :src="item.src"
+        reverse-transition="fade-transition"
+        transition="fade-transition"
+      ></v-carousel-item>
+    </v-carousel>
+    <v-content v-show="mostrarJugadoresAleatorios">
+      <v-layout row wrap>
+        <v-flex v-for="jugador in listaJugadoresAleatorios" :key="jugador.id">
+          <v-card color="#F57C00" :elevation="20" max-height="520">
+            <v-card-title
+              >Nombre completo:{{ jugador.nombreCompleto }}</v-card-title
+            >
+            <v-card-text>
+              ID:{{ jugador.id }}
+              <br />
+              Nombre Completo:{{ jugador.nombreCompleto }}
+              <br />
+              Nacionalidad:{{ jugador.nacionalidad }}
+              <br />
+              Precio:{{ jugador.precio }}
+              <br />
+              Salario:{{ jugador.salario }}
+              <br />
+              Puntuacion:{{ jugador.puntuacion }}
+              <br />
+              Potencial:{{ jugador.potencial }}
+              <br />
+              Edad:{{ jugador.edad }}
+              <br />
+              Equipo Actual:{{ jugador.equipo }}
+              <br />
+              Posicion:{{ jugador.posicion }}
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-content>
     <v-content v-show="mostrarPorFiltros">
-        <v-card color="indigo darken-2">
-          <v-toolbar color="indigo darken-1">
-             nacionalidades: 
-            <v-select :items="nacionalidades" label="Cualquiera" v-model="pais" dense outline/>
-             Posicion: 
-            <v-select :items="listaPosicionesEspañol" label="Cualquiera" v-model="posicion" dense outline/>
-             Equipo: 
-            <v-select :items="listaEquipos" label="Cualquiera" v-model="equipo" dense outline/>
-          </v-toolbar>
-          <v-toolbar color="indigo darken-1">
-            <v-slider v-if="deseaMostrarPuntuacion" v-model="valorPuntuacion" step="1" thumb-label ticks label="Maxima puntuacion" min="60"></v-slider>
-            <v-select :items="mostrarPuntuacion" v-model="puntuacion" label="Elegir maxima puntuacion"></v-select>
-          </v-toolbar>
-          <v-toolbar color="indigo darken-1">
-            <v-slider v-if="deseaMostrarPotencial" v-model="valorPotencial" step="1" thumb-label ticks label="Maximo potencial" min="60"></v-slider>
-            <v-select :items="mostrarPotencial" v-model="potencial" label="Elegir maximo potencial"></v-select>
-          </v-toolbar>
-          <v-toolbar color="indigo darken-1">
-            <v-slider v-if="deseaMostrarPrecio" v-model="valorPrecio" step="10000" thumb-label ticks label="Maximo precio" max="15000000"></v-slider>
-            <v-select :items="mostrarPrecio" v-model="precio" label="Elegir precio maximo"></v-select>
-          </v-toolbar>
-          <v-toolbar color="indigo darken-1">
-            <v-slider v-if="deseaMostrarEdad" v-model="valorEdad" step="1" thumb-label ticks label="Maxima edad" max="45" min="16"></v-slider>
-            <v-select :items="mostrarEdad" v-model="edad" label="Elegir edad maxima"></v-select>
-          </v-toolbar>
-          <v-toolbar color="indigo darken-1">
-            <v-slider v-if="deseaMostrarSalario" v-model="valorSalario" step="7000" thumb-label ticks label="Maximo Salario" max="600000"></v-slider>
-            <v-select :items="mostrarSalario" v-model="salario" label="Elegir salario maximo"></v-select>
-          </v-toolbar>
-          <v-toolbar color="indigo darken-1">
-            <v-spacer></v-spacer>
-            <v-btn color="success" @click="buscarJugadores">Buscar jugadores</v-btn>
-          </v-toolbar>
-        </v-card>
-          <v-layout row wrap>
-            <v-flex v-for="jugador in listaJugadoresPorFiltros" :key="jugador.id" >
-              <v-card  color="#F57C00" :elevation="20" max-height="520">
-                <v-card-title>Nombre completo:{{jugador.nombreCompleto}}</v-card-title>
-                <v-card-text>
-                  ID:{{jugador.id}}
-                  <br/>
-                  Nombre Completo:{{jugador.nombreCompleto}}
-                  <br/>
-                  Nacionalidad:{{jugador.nacionalidad}}
-                  <br/>
-                  Precio:{{jugador.precio}}
-                  <br/>
-                  Salario:{{jugador.salario}}
-                  <br/>
-                  Puntuacion:{{jugador.puntuacion}}
-                  <br/>
-                  Potencial:{{jugador.potencial}}
-                  <br/>
-                  Edad:{{jugador.edad}}
-                  <br/>
-                  Equipo Actual:{{jugador.equipo}}
-                  <br/>
-                  Posicion:{{jugador.posicion}}
-                </v-card-text>
-              </v-card>
-            </v-flex>
-          </v-layout>
+      <v-card color="#1A237E">
+        <v-toolbar color="#1A237E">
+          nacionalidades:
+          <v-select
+            :items="nacionalidades"
+            label="Cualquiera"
+            v-model="pais"
+            dense
+            outline
+          />
+          Posicion:
+          <v-select
+            :items="listaPosicionesEspañol"
+            label="Cualquiera"
+            v-model="posicion"
+            dense
+            outline
+          />
+          Equipo:
+          <v-select
+            :items="listaEquipos"
+            label="Cualquiera"
+            v-model="equipo"
+            dense
+            outline
+          />
+        </v-toolbar>
+        <v-toolbar color="#1A237E">
+          <v-slider
+            v-if="deseaMostrarPuntuacion"
+            v-model="valorPuntuacion"
+            step="1"
+            thumb-label
+            ticks
+            label="Maxima puntuacion"
+            min="60"
+          ></v-slider>
+          <v-select
+            :items="mostrarPuntuacion"
+            v-model="puntuacion"
+            label="Elegir maxima puntuacion"
+          ></v-select>
+        </v-toolbar>
+        <v-toolbar color="#1A237E">
+          <v-slider
+            v-if="deseaMostrarPotencial"
+            v-model="valorPotencial"
+            step="1"
+            thumb-label
+            ticks
+            label="Maximo potencial"
+            min="60"
+          ></v-slider>
+          <v-select
+            :items="mostrarPotencial"
+            v-model="potencial"
+            label="Elegir maximo potencial"
+          ></v-select>
+        </v-toolbar>
+        <v-toolbar color="#1A237E">
+          <v-slider
+            v-if="deseaMostrarPrecio"
+            v-model="valorPrecio"
+            step="10000"
+            thumb-label
+            ticks
+            label="Maximo precio"
+            max="15000000"
+          ></v-slider>
+          <v-select
+            :items="mostrarPrecio"
+            v-model="precio"
+            label="Elegir precio maximo"
+          ></v-select>
+        </v-toolbar>
+        <v-toolbar color="#1A237E">
+          <v-slider
+            v-if="deseaMostrarEdad"
+            v-model="valorEdad"
+            step="1"
+            thumb-label
+            ticks
+            label="Maxima edad"
+            max="45"
+            min="16"
+          ></v-slider>
+          <v-select
+            :items="mostrarEdad"
+            v-model="edad"
+            label="Elegir edad maxima"
+          ></v-select>
+        </v-toolbar>
+        <v-toolbar color="#1A237E">
+          <v-slider
+            v-if="deseaMostrarSalario"
+            v-model="valorSalario"
+            step="7000"
+            thumb-label
+            ticks
+            label="Maximo Salario"
+            max="600000"
+          ></v-slider>
+          <v-select
+            :items="mostrarSalario"
+            v-model="salario"
+            label="Elegir salario maximo"
+          ></v-select>
+        </v-toolbar>
+        <v-toolbar color="#1A237E">
+          <v-spacer></v-spacer>
+          <v-btn text @click="buscarJugadores">Buscar jugadores</v-btn>
+        </v-toolbar>
+      </v-card>
+      <v-layout row wrap>
+        <v-flex v-for="jugador in listaJugadoresPorFiltros" :key="jugador.id">
+          <v-card color="#F57C00" :elevation="20" max-height="520">
+            <v-card-title
+              >Nombre completo:{{ jugador.nombreCompleto }}</v-card-title
+            >
+            <v-card-text>
+              ID:{{ jugador.id }}
+              <br />
+              Nombre Completo:{{ jugador.nombreCompleto }}
+              <br />
+              Nacionalidad:{{ jugador.nacionalidad }}
+              <br />
+              Precio:{{ jugador.precio }}
+              <br />
+              Salario:{{ jugador.salario }}
+              <br />
+              Puntuacion:{{ jugador.puntuacion }}
+              <br />
+              Potencial:{{ jugador.potencial }}
+              <br />
+              Edad:{{ jugador.edad }}
+              <br />
+              Equipo Actual:{{ jugador.equipo }}
+              <br />
+              Posicion:{{ jugador.posicion }}
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
     </v-content>
     <v-content v-show="mostrarMejoresPromesas">
       <v-layout row wrap>
-          <v-flex v-for="jugador in listaJugadoresPromesas" :key="jugador.id" >
-            <v-card  color="#F57C00" :elevation="20" max-height="520">
-              <v-card-title>Nombre completo:{{jugador.nombreCompleto}}</v-card-title>
-                <v-card-text>
-                  ID:{{jugador.id}}
-                  <br/>
-                  Nombre Completo:{{jugador.nombreCompleto}}
-                  <br/>
-                  Nacionalidad:{{jugador.nacionalidad}}
-                  <br/>
-                  Precio:{{jugador.precio}}
-                  <br/>
-                  Salario:{{jugador.salario}}
-                  <br/>
-                  Puntuacion:{{jugador.puntuacion}}
-                  <br/>
-                  Potencial:{{jugador.potencial}}
-                  <br/>
-                  Edad:{{jugador.edad}}
-                  <br/>
-                  Equipo Actual:{{jugador.equipo}}
-                  <br/>
-                  Posicion:{{jugador.posicion}}
-                </v-card-text>
-            </v-card>
-          </v-flex>
-        </v-layout>
+        <v-flex v-for="jugador in listaJugadoresPromesas" :key="jugador.id">
+          <v-card color="#F57C00" :elevation="20" max-height="520">
+            <v-card-title
+              >Nombre completo:{{ jugador.nombreCompleto }}</v-card-title
+            >
+            <v-card-text>
+              ID:{{ jugador.id }}
+              <br />
+              Nombre Completo:{{ jugador.nombreCompleto }}
+              <br />
+              Nacionalidad:{{ jugador.nacionalidad }}
+              <br />
+              Precio:{{ jugador.precio }}
+              <br />
+              Salario:{{ jugador.salario }}
+              <br />
+              Puntuacion:{{ jugador.puntuacion }}
+              <br />
+              Potencial:{{ jugador.potencial }}
+              <br />
+              Edad:{{ jugador.edad }}
+              <br />
+              Equipo Actual:{{ jugador.equipo }}
+              <br />
+              Posicion:{{ jugador.posicion }}
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
     </v-content>
     <v-content v-show="mostrarMejoresJugadores">
       <v-layout row wrap>
-          <v-flex v-for="jugador in listaMejoresJugadores" :key="jugador.id" >
-            <v-card  color="#F57C00" :elevation="20" max-height="520">
-              <v-card-title>Nombre completo:{{jugador.nombreCompleto}}</v-card-title>
-                <v-card-text>
-                  ID:{{jugador.id}}
-                  <br/>
-                  Nombre Completo:{{jugador.nombreCompleto}}
-                  <br/>
-                  Nacionalidad:{{jugador.nacionalidad}}
-                  <br/>
-                  Precio:{{jugador.precio}}
-                  <br/>
-                  Salario:{{jugador.salario}}
-                  <br/>
-                  Puntuacion:{{jugador.puntuacion}}
-                  <br/>
-                  Potencial:{{jugador.potencial}}
-                  <br/>
-                  Edad:{{jugador.edad}}
-                  <br/>
-                  Equipo Actual:{{jugador.equipo}}
-                  <br/>
-                  Posicion:{{jugador.posicion}}
-                </v-card-text>
-            </v-card>
-          </v-flex>
-        </v-layout>
+        <v-flex v-for="jugador in listaMejoresJugadores" :key="jugador.id">
+          <v-card color="#F57C00" :elevation="20" max-height="520">
+            <v-card-title
+              >Nombre completo:{{ jugador.nombreCompleto }}</v-card-title
+            >
+            <v-card-text>
+              ID:{{ jugador.id }}
+              <br />
+              Nombre Completo:{{ jugador.nombreCompleto }}
+              <br />
+              Nacionalidad:{{ jugador.nacionalidad }}
+              <br />
+              Precio:{{ jugador.precio }}
+              <br />
+              Salario:{{ jugador.salario }}
+              <br />
+              Puntuacion:{{ jugador.puntuacion }}
+              <br />
+              Potencial:{{ jugador.potencial }}
+              <br />
+              Edad:{{ jugador.edad }}
+              <br />
+              Equipo Actual:{{ jugador.equipo }}
+              <br />
+              Posicion:{{ jugador.posicion }}
+            </v-card-text>
+          </v-card>
+        </v-flex>
+      </v-layout>
     </v-content>
     <v-content>
-      <router-view/>
+      <router-view />
     </v-content>
   </v-app>
 </template>
