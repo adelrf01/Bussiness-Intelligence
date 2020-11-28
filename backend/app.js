@@ -231,9 +231,9 @@ app.get("/dameJugadoresConFiltros",(req,res)=>{
     }
     if(edad!="cualquiera"){
         if(query.includes("where")){
-            query+="AND j.edad='"+edad+"' ";
+            query+="AND j.edad<='"+edad+"' ";
         }else{
-            query+="where j.edad='"+edad+"' ";
+            query+="where j.edad<='"+edad+"' ";
         }
     }
     if(query.includes("where")==false){
