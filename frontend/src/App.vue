@@ -3,7 +3,7 @@
     <v-app-bar app color="#1A237E" dark>
       <v-row align="center" justify="center">
         <v-btn text @click="jugadoresAleatorios">Jugadores aleatorios</v-btn>
-        <v-btn text @click="filtros">Elegir jugador por mediante filtros</v-btn>
+        <v-btn text @click="filtros">Elegir jugador mediante filtros</v-btn>
         <v-btn text @click="jugadoresPromesas">Mejores promesas</v-btn>
         <v-btn text @click="mejoresJugadores">Mejores jugadores</v-btn>
       </v-row>
