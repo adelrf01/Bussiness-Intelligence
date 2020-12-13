@@ -5,8 +5,7 @@ Queda guardado tanto la base de datos utilizada para saber los jugadores como el
 Podemos encontrar una serie de carpetas:
 
 
-Videos: se encuentran dos videos donde se hace la explicación de la presentación y la ejecución y prueba del sistema de recomendación. Por si no se pudieran descargar por tamaño, también se incluye un fichero zip donde se encuentran ambos videos dentro de esta carpeta.
-
+Videos: se encuentran dos videos donde se hace la explicación de la presentación y la ejecución y prueba del sistema de recomendación. Por si no se pudieran descargar por tamaño, esta colgado en mi drive en un fichero zip en este enlace:https://drive.google.com/file/d/1B7KC7aKzsSeQLsYBFNUxvwCIeQV68Jl_/view?usp=sharing
 
 Frontend: archivos con el código para ejecutar la interfaz del sistema de recomendación.
 
